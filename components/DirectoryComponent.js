@@ -9,6 +9,7 @@ function Directory(props) {
             <ListItem
                 title={item.name}
                 subtitle={(item.description)}
+                onPress= { () => props.onPress(item.id)}
                 // LeftAvatar requires an object. 
                 // First braces to embed javascript. 
                 // Second to define the object literal
