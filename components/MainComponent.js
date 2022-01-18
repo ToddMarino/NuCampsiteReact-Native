@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
-import Directory from './DirectoryComponent'
-import CampsiteInfo from './CampsiteInfoComponent'
-import Constants from 'expo-constants'
-import { View, Platform } from 'react-native'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createAppContainer } from 'react-navigation'
+import React, { Component } from 'react';
+import Home from './HomeComponent';
+import Directory from './DirectoryComponent';
+import CampsiteInfo from './CampsiteInfoComponent';
+import Constants from 'expo-constants';
+import { View, Platform } from 'react-native';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createAppContainer } from 'react-navigation';
 
 const DirectoryNavigator = createStackNavigator (
     {
@@ -23,9 +25,36 @@ const DirectoryNavigator = createStackNavigator (
             }
         }
     }
-)
+);
 
-const AppNavigator = createAppContainer(DirectoryNavigator)
+const HomeNavigator = createStackNavigator (
+    {
+        Home: { screen: Home},
+    },
+    {
+        defaultNavigationOptions: { 
+            headerStyle: {
+                backgroundColor: '#5637dd'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            }
+        }
+    } 
+);
+
+const MainNavigator = createDrawerNavigator(
+    {
+        Home: { screen: HomeNavigator},
+        Directory: { screen: DirectoryNavigator}
+    },
+    {
+        drawerBackgroundColor: '#cec8ff'
+    }
+);
+
+const AppNavigator = createAppContainer(MainNavigator)
 
 class Main extends Component {
     render() {
@@ -37,9 +66,8 @@ class Main extends Component {
                     }}>
                 <AppNavigator />
             </View>   
-        ) 
-
+        );
     }
 }
 
-export default Main
+export default Main;

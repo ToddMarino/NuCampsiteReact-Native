@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-import { CAMPSITES } from '../shared/campsites'
-import { FlatList } from 'react-native'
-import { ListItem } from 'react-native-elements'
+import React, { Component } from 'react';
+import { CAMPSITES } from '../shared/campsites';
+import { FlatList } from 'react-native';
+import { ListItem } from 'react-native-elements';
 
 class Directory extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             campsites: CAMPSITES
-        }
+        };
     }
 
     static navigationOptions = {
@@ -17,13 +17,13 @@ class Directory extends Component {
     }
 
     render() {
-        const { navigate } = this.props.navigation
+        const { navigate } = this.props.navigation;
         const renderDirectoryItem = ( {item} ) => {
             return (
                 <ListItem
                     title={item.name}
                     subtitle={(item.description)}
-                    onPress= { () => navigate('CampsiteInfo', { campsiteID: item.id} ) }
+                    onPress= { () => navigate('CampsiteInfo', { campsiteId: item.id} ) }
                     // LeftAvatar requires an object. 
                     // First braces to embed javascript. 
                     // Second to define the object literal
@@ -42,4 +42,4 @@ class Directory extends Component {
     }
 }
 
-export default Directory
+export default Directory;
