@@ -61,6 +61,15 @@ function RenderComments({ comments }) {
             return (
                 <View style={{margin: 10}}>
                     <Text style={{fontSize: 14}}>{item.text}</Text>
+                    <Rating
+                        style={
+                            {alignItems: 'flex-start',
+                            paddingVertical: '5%'}
+                        }
+                        startingValue={item.rating}
+                        imageSize={10}
+                        readonly
+                    />
                     <Text style={{fontSize: 12}}>{item.rating}</Text>
                     <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date} `}</Text>
                 </View>
@@ -150,8 +159,8 @@ class CampsiteInfo extends Component {
                                 />
                             }
                             leftIconContainerStyle={{paddingRight: 10}}
-                            onChangeText
-                            value=''
+                            onChangeText={author => this.setState({author: author})}
+                            value={this.state.author}
                         >
                         </Input>
                         <Input
@@ -160,19 +169,31 @@ class CampsiteInfo extends Component {
                                 <Icon
                                    name='comment-o'
                                    type='font-awesome'
-
                                 />
                             }
                             leftIconContainerStyle={{paddingRight: 10}}
-                            onChangeText
-                            value=''
+                            onChangeText={text => this.setState({text: text})}
+                            value={this.state.text}
                         >
                         </Input>
+                        <View>
+                            <Button
+                            title="Submit"
+                            color="#5637dd"
+                            onPress={() => {
+                                this.handleComment(campsiteId);
+                                this.resetForm();
+                            }}
+                            />
+                        </View>
                         <View style={{margin: 10}}>
                             <Button
                                 color="#808080"
                                 title="Cancel"
-                                onPress={() => this.toggleModal()}
+                                onPress={() => {
+                                    this.toggleModal();
+                                    this.resetForm()
+                                }}
                             />
                         </View>
                     </View>
