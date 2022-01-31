@@ -1,6 +1,11 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
+
+// ***************************************
+//             COMMENTS
+// ***************************************
+
 export const fetchComments = () => dispatch => {
     return fetch(baseUrl + 'comments')
         .then(response => {
@@ -31,10 +36,6 @@ export const addComments = comments => ({
     payload: comments
 });
 
-// ***************************************
-//             WEEK 2 SECTION 3
-// ***************************************
-
 export const postComment = (campsiteId, rating, author, text) => dispatch => {
     const newComment = {
         campsiteId,
@@ -50,6 +51,10 @@ export const addComment = comment => ({
     type: ActionTypes.ADD_COMMENT,
     payload: comment
 }) 
+
+// ***************************************
+//             CAMPSITES
+// ***************************************
 
 export const fetchCampsites = () => dispatch => {
 
@@ -88,6 +93,10 @@ export const addCampsites = campsites => ({
     payload: campsites
 });
 
+// ***************************************
+//             PROMOTIONS
+// ***************************************
+
 export const fetchPromotions = () => dispatch => {
     
     dispatch(promotionsLoading());
@@ -124,6 +133,10 @@ export const addPromotions = promotions => ({
     type: ActionTypes.ADD_PROMOTIONS,
     payload: promotions
 });
+
+// ***************************************
+//             PARTNERS
+// ***************************************
 
 export const fetchPartners = () => dispatch => {
     
@@ -162,13 +175,22 @@ export const addPartners = partners => ({
     payload: partners
 });
 
+// ***************************************
+//             FAVORITES
+// ***************************************
+
 export const postFavorite = campsiteId => dispatch => {
     setTimeout(() => {
         dispatch(addFavorite(campsiteId))
     }, 2000)
-}
+};
 
 export const addFavorite = campsiteId => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: campsiteId
-})
+});
+
+export const deleteFavorite = campsiteId => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: campsiteId
+});
