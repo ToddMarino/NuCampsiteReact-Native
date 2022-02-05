@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder } from 'react-native'
-import { Card, Icon, Input, Rating } from 'react-native-elements'
-import { connect } from 'react-redux'
-import { baseUrl } from '../shared/baseUrl'
-import { postFavorite, postComment } from '../redux/ActionCreators'
-import * as Animatable from 'react-native-animatable'
+import React, { Component } from 'react';
+import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder } from 'react-native';
+import { Card, Icon, Input, Rating } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+import { postFavorite, postComment } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -25,7 +25,9 @@ function RenderCampsite( props ) {
 
     const view = React.createRef();
 
-    const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+    const recognizeComment = ({dx}) => (dx > 200 ? true: false);
+
+    const recognizeDrag = ({dx}) => (dx < -200 ? true : false);
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -34,7 +36,7 @@ function RenderCampsite( props ) {
         },
         onPanResponderEnd: (e, gestureState) => {
             console.log('pan responder end', gestureState);
-            if (recognizeDrag(gestureState))  {
+            if (recognizeDrag(gestureState)) {
                 Alert.alert(
                     'Add Favorite',
                     'Are you sure you wish to add ' + campsite.name + ' to favorites?',
@@ -47,14 +49,18 @@ function RenderCampsite( props ) {
                         {
                             text: 'OK',
                             onPress: () => props.favorite ?
-                                console.log('Already set as a favorite') : props.markFavorite()
+                            console.log('Already set as a favorite'): 
+                            props.markFavorite()
                         }
                     ],
                     {cancelable: false}
                 );
-        }
+            } else if (recognizeComment(gestureState))  {
+                console.log('this')
+                props.onShowModal();
+            }
         return true;
-    }
+        }
     });
 
     if (campsite) {
@@ -152,13 +158,14 @@ class CampsiteInfo extends Component {
     }
 
     resetForm() {
-        this.setState = ({
+        this.setState ({
             showModal: false,
             rating: 5,
             author: "",
             text: ""
-        })
+        });
     }
+
 
     markFavorite(campsiteId) {
         this.props.postFavorite(campsiteId)
@@ -184,7 +191,7 @@ class CampsiteInfo extends Component {
                     animationType={"slide"}
                     transparent={false}
                     visible={this.state.showModal}
-                    onRequestClose={() => this.toggleModal}
+                    onRequestClose={() => this.toggleModal()}
                 >
                     <View style={styles.modal}>
                         <Rating
@@ -237,7 +244,8 @@ class CampsiteInfo extends Component {
                                 title="Cancel"
                                 onPress={() => {
                                     this.toggleModal();
-                                    this.resetForm()
+                                    this.resetForm();
+                                    console.log(this.state)
                                 }}
                             />
                         </View>
