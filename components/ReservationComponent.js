@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Text, View, ScrollView, StyleSheet,
-        Picker, Switch, Button, Modal } from 'react-native'
+        Picker, Switch, Button, Alert } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Reservation extends Component {
 
@@ -13,8 +14,7 @@ class Reservation extends Component {
             campers: 1,
             hikeIn: false,
             date: new Date(),
-            showCalendar: false, 
-            showModal: false
+            showCalendar: false 
         };
     }
 
@@ -22,14 +22,33 @@ class Reservation extends Component {
         title: 'Reserve Campsite'
     }
 
-    toggleModal() {
-        this.setState({showModal: !this.state.showModal})
-    }
 
-    handleReservation() {
-        console.log(JSON.stringify(this.state));
-        this.toggleModal();
-    }
+    // handleReservation() {
+    //     this.reservationAlert();
+    // }
+
+    reservationAlert() {
+            Alert.alert(
+                'Begin Search?',
+                'Number of Campers: ' + this.state.campers + '\nHike-In:' + this.state.hikeIn + '\nDate: ' + this.state.date.toDateString(),
+                [
+                    {
+                        text: 'CANCEL',
+                        onPress: () => {
+                            console.log('Reservations cancelled');
+                            this.resetForm();
+                        },
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'OK',
+                        OnPress: ()=> this.resetForm()
+                    },
+                ],
+                {cancelable: false}
+                );
+            }
+
 
     resetForm() {
         this.setState({
@@ -93,33 +112,12 @@ class Reservation extends Component {
                     )}
                     <View style={styles.formRow}>
                         <Button
-                            onPress={() => this.handleReservation()}
                             title='Search'
                             color='#5637dd'
                             accessibilityLabel='Tap me to search for available campsites to reserve'
+                            onPress={() => this.reservationAlert()}
                         />
                     </View>
-                    <Modal
-                        animationType={'slide'}
-                        transparent={false}
-                        visible={this.state.showModal}
-                        onRequestClose={() => this.toggleModal}
-                    >
-                        <View style={styles.modal}>
-                            <Text style={styles.modalTitle}>Search Campsite Reservations</Text>
-                            <Text style={styles.modalText}>Number of Campers: {this.state.campers}</Text>
-                            <Text style={styles.modalText}>Hike-In?: {this.state.hikeIn}</Text>
-                            <Text style={styles.modalText}>Date: {this.state.date.toLocaleDateString('en-US')}</Text>
-                            <Button
-                                onPress={() => {
-                                    this.toggleModal();
-                                    this.resetForm();
-                                }}
-                                color='#5637dd'
-                                title='Close'
-                            />
-                        </View>
-                    </Modal>
                 </Animatable.View>
             </ScrollView>
         )
@@ -140,22 +138,6 @@ const styles = StyleSheet.create({
     },
     formItem: {
         flex: 1
-    },
-    modal: {
-        justifyContent: 'center',
-        margin: 20
-    },
-    modalTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        backgroundColor: '#5637dd',
-        textAlign: 'center',
-        color: '#fff',
-        marginBottom: 20
-    },
-    modalText: {
-        fontSize: 18,
-        margin: 10
     }
 })
 
