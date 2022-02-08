@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder } from 'react-native';
-import { Card, Icon, Input, Rating } from 'react-native-elements';
+import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder, Share  } from 'react-native';
+import { Card, Icon, Input, Rating} from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite, postComment } from '../redux/ActionCreators';
@@ -18,6 +18,10 @@ const mapDispatchToProps = {
     postFavorite: campsiteId => (postFavorite(campsiteId)),
     postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text))
 }
+
+// ****************************************************************************
+//                         RenderCampsite Function
+// ****************************************************************************
 
 function RenderCampsite( props ) {
 
@@ -63,6 +67,16 @@ function RenderCampsite( props ) {
         }
     });
 
+    const shareCampsite = (title, message, url) => {
+        Share.share({
+            title,
+            message: `${title}: ${message} ${url}`,
+            url
+        }, {
+            dialogTitle: 'Share ' + title
+        })
+    }
+
     if (campsite) {
         return (
             <Animatable.View 
@@ -96,6 +110,16 @@ function RenderCampsite( props ) {
                             reverse
                             onPress={() => props.onShowModal()}
                         />
+                        <Icon 
+                            name='share'
+                            type="font-awesome"
+                            color="#5637dd"
+                            raised
+                            reverse
+                            onPress={() => shareCampsite(campsite.name, campsite.description,
+                                baseUrl + campsite.image)}
+
+                        />
                     </View>
                 </Card>
             </Animatable.View>
@@ -103,6 +127,11 @@ function RenderCampsite( props ) {
     }
         return <View />
 }
+
+
+// ****************************************************************************
+//                         RenderComments Function
+// ****************************************************************************
 
 function RenderComments({ comments }) {
 
@@ -135,6 +164,11 @@ function RenderComments({ comments }) {
                 </Card>
             </Animatable.View>
         )}
+
+
+// ****************************************************************************
+//                         CampsiteInfo Component
+// ****************************************************************************        
 
 class CampsiteInfo extends Component {
     constructor(props) {
