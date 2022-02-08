@@ -319,6 +319,9 @@ const MainNavigator = createDrawerNavigator(
             }
         }
     },
+// **************************************************************************
+//                 Custom Options
+// **************************************************************************
     {
         initialRouteName: 'Home',
         drawerBackgroundColor: '#cec8ff',
@@ -350,6 +353,9 @@ class Main extends Component {
     }
 }
 
+// **************************************************************************
+//                 Stylesheet
+// **************************************************************************
 const styles = StyleSheet.create({
     container: {
         flex: 1
