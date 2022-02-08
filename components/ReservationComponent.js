@@ -39,9 +39,10 @@ class Reservation extends Component {
                     },
                     {
                         text: 'OK',
-                        OnPress: ()=> {
-                        this.presentLocalNotification(this.state.date.toLocaleDateString('en-US'));
-                        this.resetForm();
+                        OnPress: () => {
+                            this.presentLocalNotification(this.state.date.toLocaleDateString('en-US'));
+                            this.resetForm();
+                            console.log('Form Reset')
                         }
                     },
                 ],
@@ -49,8 +50,6 @@ class Reservation extends Component {
                 );
             }
 
-            
-            
             resetForm() {
                 this.setState({
                     campers: 1,
