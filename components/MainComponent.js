@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import Home from './HomeComponent';
-import Directory from './DirectoryComponent';
-import CampsiteInfo from './CampsiteInfoComponent';
-import Constants from 'expo-constants';
-import About from './AboutComponent';
-import Contact from './ContactComponents';
-import Reservation from './ReservationComponent';
-import Favorites from './FavoritesComponent';
 import { View, Platform, StyleSheet, Text, ScrollView, Image } from 'react-native';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
-import { createAppContainer } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { connect } from 'react-redux';
 import { fetchCampsites, fetchComments, fetchPromotions, fetchPartners } from '../redux/ActionCreators';
+import About from './AboutComponent';
+import CampsiteInfo from './CampsiteInfoComponent';
+import Constants from 'expo-constants';
+import Contact from './ContactComponents';
+import Directory from './DirectoryComponent';
+import Home from './HomeComponent';
+import Favorites from './FavoritesComponent';
+import Login from './LoginComponent';
+import Reservation from './ReservationComponent';
 
 const mapDispatchToProps = {
     fetchCampsites,
@@ -22,6 +23,11 @@ const mapDispatchToProps = {
     fetchPromotions,
     fetchPartners  
 };
+
+
+// **************************************************************************
+//                 Stack Navigator
+// **************************************************************************
 
 const DirectoryNavigator = createStackNavigator (
     {
@@ -50,6 +56,29 @@ const DirectoryNavigator = createStackNavigator (
             }
         }
     }
+);
+
+const LoginNavigator = createStackNavigator (
+    {
+        Login: { screen: Login },
+    },
+    {
+        defaultNavigationOptions: ({navigation}) =>  ({ 
+            headerStyle: {
+                backgroundColor: '#5637dd'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            },
+            headerLeft: <Icon
+                    name='sign-in'
+                    type='font-awesome'
+                    iconStyle={styles.stackIcon}
+                    onPress={() => navigation.toggleDrawer()}
+                />
+        })
+    } 
 );
 
 const HomeNavigator = createStackNavigator (
@@ -166,6 +195,10 @@ const ReservationNavigator = createStackNavigator (
     }
 )
 
+// **************************************************************************
+//                 Drawer Navigator
+// **************************************************************************
+
 const CustomDrawerContentComponent = props => (
     <ScrollView>
         <SafeAreaView
@@ -190,6 +223,19 @@ const CustomDrawerContentComponent = props => (
 
 const MainNavigator = createDrawerNavigator(
     {
+        Login: {
+            screen: LoginNavigator,
+            navigationOptions: {
+                drawerIcon: ({tintColor}) => (
+                    <Icon
+                        name="sign-in"
+                        type="font-awesome"
+                        size={24}
+                        color={tintColor}
+                    />
+                )
+            }
+        },
         Home: {
             screen: HomeNavigator,
             navigationOptions: {
@@ -274,6 +320,7 @@ const MainNavigator = createDrawerNavigator(
         }
     },
     {
+        initialRouteName: 'Home',
         drawerBackgroundColor: '#cec8ff',
         contentComponent: CustomDrawerContentComponent
     }
