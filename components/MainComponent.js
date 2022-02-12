@@ -352,7 +352,7 @@ class Main extends Component {
     }
 
     componentWillUnmount() {
-        this.unsubribeNetInfo();
+        this.unsubscribeNetInfo();
     }
 
     handleConnectivityChange = connectionInfo => {

@@ -45,7 +45,7 @@ class LoginTab extends Component {
                     username: this.state.username,
                     password: this.state.password
                 })
-            )   .catch(error => console.log('Could not save user infor', error));
+            )   .catch(error => console.log('Could not save user info', error));
         }   else {
             SecureStore.deleteItemAsync('userinfo').catch(
                 error => console.log('Could not delete user info', error)
@@ -167,7 +167,7 @@ class RegisterTab extends Component {
         if(cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
             const capturedImage = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
-                apsect: 1
+                aspect: [1, 1]
             });
             if(!capturedImage.cancelled) {
                 console.log(capturedImage);
@@ -197,13 +197,12 @@ class RegisterTab extends Component {
 //             Week 4 Task 2
 // ***********************************************\
     getImageFromGallery = async () => {
-        // console.log('get image from gallery function')
         const cameraRollPermissions = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
         console.log(cameraRollPermissions)
         if (cameraRollPermissions === 'granted') {
             let capturedImage = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
-                aspect: 1
+                aspect: [1,1]
             });
             console.log(capturedImage)
             if (!capturedImage.cancelled) {
@@ -222,7 +221,7 @@ class RegisterTab extends Component {
                     username: this.state.username,
                     password: this.state.password
                 })
-            )   .catch(error => console.log('Could not save user infor', error));
+            )   .catch(error => console.log('Could not save user info', error));
         }   else {
             SecureStore.deleteItemAsync('userinfo').catch(
                 error => console.log('Could not delete user info', error)
