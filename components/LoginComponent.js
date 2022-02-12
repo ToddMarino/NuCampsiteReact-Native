@@ -1,10 +1,11 @@
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+import * as Permissions from 'expo-permissions';
+import * as SecureStore from 'expo-secure-store';
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Input, CheckBox, Button, Icon } from 'react-native-elements';
-import * as SecureStore from 'expo-secure-store';
-import * as ImagePicker from 'expo-image-picker';
-import { manipulateAsync, SaveFormat, ActionResize } from 'expo-image-manipulator';
-import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { baseUrl } from '../shared/baseUrl';
 
@@ -177,9 +178,9 @@ class RegisterTab extends Component {
         }
     }
 
-// ***********************************************
-//             Week 4 Task 1
-// ***********************************************
+    // ***********************************************
+    //             Week 4 Task 1
+    // ***********************************************
     processImage = async (imgUri) => {
         const processedImage = await manipulateAsync(
             imgUri,
@@ -187,8 +188,9 @@ class RegisterTab extends Component {
                 { resize: {width: 400, height: 400} }
             ],
             { format: SaveFormat.PNG }
-        );
-        console.log(processedImage)
+            );
+            console.log(processedImage)
+        MediaLibrary.saveToLibraryAsync(imgUri)
         this.setState({imageUrl: processedImage.uri})
         console.log(state)
     }
