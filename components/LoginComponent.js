@@ -1,11 +1,18 @@
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+import * as Permissions from 'expo-permissions';
+import * as SecureStore from 'expo-secure-store';
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Input, CheckBox, Button, Icon } from 'react-native-elements';
-import * as SecureStore from 'expo-secure-store';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { baseUrl } from '../shared/baseUrl';
+
+
+// ****************************************************************************
+//                         LoginTab Component
+// ****************************************************************************
 
 class LoginTab extends Component {
     
@@ -39,7 +46,7 @@ class LoginTab extends Component {
                     username: this.state.username,
                     password: this.state.password
                 })
-            )   .catch(error => console.log('Could not save user infor', error));
+            )   .catch(error => console.log('Could not save user info', error));
         }   else {
             SecureStore.deleteItemAsync('userinfo').catch(
                 error => console.log('Could not delete user info', error)
@@ -122,6 +129,9 @@ class LoginTab extends Component {
 }
 
 
+// ****************************************************************************
+//                         RegisterTab Component
+// ****************************************************************************
 
 class RegisterTab extends Component {
 
@@ -158,11 +168,48 @@ class RegisterTab extends Component {
         if(cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
             const capturedImage = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
-                apsect: [1, 1]
+                aspect: [1, 1]
             });
             if(!capturedImage.cancelled) {
                 console.log(capturedImage);
-                this.setState({imageUrl: capturedImage.uri})
+                // this.setState({imageUrl: capturedImage.uri})
+                this.processImage(capturedImage.uri)
+            }
+        }
+    }
+
+    // ***********************************************
+    //             Week 4 Task 1
+    // ***********************************************
+    processImage = async (imgUri) => {
+        const processedImage = await manipulateAsync(
+            imgUri,
+            [
+                { resize: {width: 400, height: 400} }
+            ],
+            { format: SaveFormat.PNG }
+            );
+            console.log(processedImage)
+        MediaLibrary.saveToLibraryAsync(imgUri)
+        this.setState({imageUrl: processedImage.uri})
+        console.log(state)
+    }
+
+// ***********************************************
+//             Week 4 Task 2
+// ***********************************************\
+    getImageFromGallery = async () => {
+        const cameraRollPermissions = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+        console.log(cameraRollPermissions)
+        if (cameraRollPermissions.status === 'granted') {
+            let capturedImage = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [1,1]
+            });
+            console.log(capturedImage)
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage)
+                this.processImage(capturedImage.uri)
             }
         }
     }
@@ -176,7 +223,7 @@ class RegisterTab extends Component {
                     username: this.state.username,
                     password: this.state.password
                 })
-            )   .catch(error => console.log('Could not save user infor', error));
+            )   .catch(error => console.log('Could not save user info', error));
         }   else {
             SecureStore.deleteItemAsync('userinfo').catch(
                 error => console.log('Could not delete user info', error)
@@ -197,6 +244,10 @@ class RegisterTab extends Component {
                         <Button 
                             title='Camera'
                             onPress={this.getImageFromCamera}
+                        />
+                        <Button 
+                            title='Gallery'
+                            onPress={this.getImageFromGallery}
                         />
                     </View>
                     <Input

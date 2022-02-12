@@ -18,7 +18,7 @@ export const PARTNERS = [
         name: "Mongo Fly Shop",
         image: "/assets/images/mongo-logo.png",
         featured: false,
-        description: "Need a new fishing pole, a tacklebox, or flies of all kinds? Stop by Mongo Fly Shop."
+        description: "Need a new fishing pole, a tackle-box, or flies of all kinds? Stop by Mongo Fly Shop."
     },
     {
         id: 3,
