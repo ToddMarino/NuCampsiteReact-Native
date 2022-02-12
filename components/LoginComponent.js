@@ -8,6 +8,11 @@ import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { baseUrl } from '../shared/baseUrl';
 
+
+// ****************************************************************************
+//                         LoginTab Component
+// ****************************************************************************
+
 class LoginTab extends Component {
     
     constructor(props) {
@@ -123,6 +128,9 @@ class LoginTab extends Component {
 }
 
 
+// ****************************************************************************
+//                         RegisterTab Component
+// ****************************************************************************
 
 class RegisterTab extends Component {
 
@@ -159,7 +167,7 @@ class RegisterTab extends Component {
         if(cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
             const capturedImage = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
-                apsect: [1, 1]
+                apsect: 1
             });
             if(!capturedImage.cancelled) {
                 console.log(capturedImage);
@@ -169,6 +177,9 @@ class RegisterTab extends Component {
         }
     }
 
+// ***********************************************
+//             Week 4 Task 1
+// ***********************************************
     processImage = async (imgUri) => {
         const processedImage = await manipulateAsync(
             imgUri,
@@ -180,6 +191,26 @@ class RegisterTab extends Component {
         console.log(processedImage)
         this.setState({imageUrl: processedImage.uri})
         console.log(state)
+    }
+
+// ***********************************************
+//             Week 4 Task 2
+// ***********************************************\
+    getImageFromGallery = async () => {
+        // console.log('get image from gallery function')
+        const cameraRollPermissions = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+        console.log(cameraRollPermissions)
+        if (cameraRollPermissions === 'granted') {
+            let capturedImage = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: 1
+            });
+            console.log(capturedImage)
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage)
+                this.processImage(capturedImage.uri)
+            }
+        }
     }
 
     handleRegister() {
@@ -212,6 +243,10 @@ class RegisterTab extends Component {
                         <Button 
                             title='Camera'
                             onPress={this.getImageFromCamera}
+                        />
+                        <Button 
+                            title='Gallery'
+                            onPress={this.getImageFromGallery}
                         />
                     </View>
                     <Input
